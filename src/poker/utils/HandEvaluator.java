@@ -3,11 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package poker;
+package poker.utils;
 
+import poker.interfaces.IHandEvaluator;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import poker.Card;
+import poker.Hands;
 import poker.Hands.Type;
 
 /**

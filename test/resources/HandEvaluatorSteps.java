@@ -12,9 +12,9 @@ import static org.junit.Assert.assertEquals;
 import poker.Card;
 import poker.Card.Rank;
 import poker.Card.Suit;
-import poker.HandEvaluator;
+import poker.utils.HandEvaluator;
 import poker.Hands;
-import poker.IHandEvaluator;
+import poker.interfaces.IHandEvaluator;
 
 /**
  *
