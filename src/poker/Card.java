@@ -20,6 +20,7 @@ public final class Card {
         }
     }
 
+    public static final String STRING_SUIT_CARDS = "♠♥♦♣";
     public static final String STRING_RANK_CARDS = "23456789TJQKA";
 
     public static enum Rank {
