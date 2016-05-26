@@ -2,3 +2,4 @@ lib
 *.class
 build
 dist
+private.xml

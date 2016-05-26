@@ -12,7 +12,12 @@ package poker;
 public final class Card {
 
     public static enum Suit {
-        SPADE, HEART, DIAMOND, CLUB
+        SPADE('♠'), HEART('♥'), DIAMOND('♦'), CLUB('♣');
+
+        private final char c;
+        private Suit(char c) {
+            this.c = c;
+        }
     }
 
     public static final String STRING_RANK_CARDS = "23456789TJQKA";
@@ -62,8 +67,6 @@ public final class Card {
     @Override
     public String toString() {
         int rankValue = rank.ordinal();
-        return STRING_RANK_CARDS
-                .substring(rankValue, rankValue + 1)
-                .concat(suit.name().substring(0, 1));
+        return STRING_RANK_CARDS.substring(rankValue, rankValue + 1) + suit.c;
     }
 }
