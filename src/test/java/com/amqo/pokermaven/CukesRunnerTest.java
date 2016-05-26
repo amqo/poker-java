@@ -1,3 +1,5 @@
+package com.amqo.pokermaven;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -5,7 +7,7 @@
  */
 
 import cucumber.api.junit.Cucumber;
-import cucumber.api.CucumberOptions;
+//import cucumber.api.CucumberOptions;
 import org.junit.runner.RunWith;
 
 /**
@@ -13,7 +15,7 @@ import org.junit.runner.RunWith;
  * @author alberto
  */
 @RunWith(Cucumber.class)
-@CucumberOptions(features = "resources")
+//@CucumberOptions(features = "src/test/java/com/amqo/pokermaven/resources")
 public class CukesRunnerTest {
     
     public CukesRunnerTest() {

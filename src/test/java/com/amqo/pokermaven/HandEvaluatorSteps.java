@@ -3,12 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package resources;
+package com.amqo.pokermaven;
 
-import com.amqo.pokermaven.Card;
 import com.amqo.pokermaven.Card.Rank;
 import com.amqo.pokermaven.Card.Suit;
-import com.amqo.pokermaven.Hands;
 import com.amqo.pokermaven.interfaces.IHandEvaluator;
 import com.amqo.pokermaven.utils.HandEvaluator;
 import cucumber.api.java.en.Given;
