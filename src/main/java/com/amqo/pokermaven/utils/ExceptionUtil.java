@@ -16,6 +16,8 @@ public final class ExceptionUtil {
     public static final String NULL_ERR_MSG = "El argumento {0} no puede ser nulo.";
     public static final String LENGTH_ERR_MSG
             = "El argumento {0} no puede ser nulo y debe tener una longitud de {1}.";
+    public static final String MIN_ERR_MSG
+            = "El argumento {0} no tiene un valor válido.";
 
     private ExceptionUtil() {
     }
@@ -38,6 +40,13 @@ public final class ExceptionUtil {
         if (throwEx) {
             throw new IllegalArgumentException(
                     MessageFormat.format(msg, args));
+        }
+    }
+    
+    public static void checkMinValueArgument(int arg1, int arg2, String name) {
+        if (arg1 < arg2) {
+            throw new IllegalArgumentException(
+                    MessageFormat.format(MIN_ERR_MSG, name));
         }
     }
 }
