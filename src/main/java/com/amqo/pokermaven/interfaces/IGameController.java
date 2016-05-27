@@ -5,13 +5,19 @@
  */
 package com.amqo.pokermaven.interfaces;
 
-import com.amqo.pokermaven.core.Card;
+import com.amqo.pokermaven.game.Settings;
 
 /**
  *
  * @author alberto
  */
-public interface IHandEvaluator {
+public interface IGameController {
 
-    public int eval(Card[] cards);
+    public void setSettings(Settings settings);
+
+    public boolean addStrategy(IStrategy strategy);
+
+    public void start();
+
+    public void waitFinish();
 }

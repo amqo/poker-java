@@ -5,6 +5,7 @@
  */
 package com.amqo.pokermaven;
 
+import com.amqo.pokermaven.game.Combination;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

@@ -9,9 +9,9 @@ import com.amqo.pokermaven.interfaces.IHandEvaluator;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import com.amqo.pokermaven.Card;
-import com.amqo.pokermaven.Hands;
-import com.amqo.pokermaven.Hands.Type;
+import com.amqo.pokermaven.core.Card;
+import com.amqo.pokermaven.core.Hands;
+import com.amqo.pokermaven.core.Hands.Type;
 
 /**
  *

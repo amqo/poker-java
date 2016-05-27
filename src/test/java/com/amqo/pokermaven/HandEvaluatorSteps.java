@@ -5,8 +5,10 @@
  */
 package com.amqo.pokermaven;
 
-import com.amqo.pokermaven.Card.Rank;
-import com.amqo.pokermaven.Card.Suit;
+import com.amqo.pokermaven.core.Hands;
+import com.amqo.pokermaven.core.Card;
+import com.amqo.pokermaven.core.Card.Rank;
+import com.amqo.pokermaven.core.Card.Suit;
 import com.amqo.pokermaven.interfaces.IHandEvaluator;
 import com.amqo.pokermaven.utils.HandEvaluator;
 import cucumber.api.java.en.Given;

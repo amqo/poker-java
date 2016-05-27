@@ -43,7 +43,7 @@ public final class ExceptionUtil {
         }
     }
     
-    public static void checkMinValueArgument(int arg1, int arg2, String name) {
+    public static void checkMinValueArgument(long arg1, long arg2, String name) {
         if (arg1 < arg2) {
             throw new IllegalArgumentException(
                     MessageFormat.format(MIN_ERR_MSG, name));

@@ -5,6 +5,7 @@
  */
 package com.amqo.pokermaven;
 
+import com.amqo.pokermaven.game.Combination;
 import java.util.Arrays;
 import java.util.Collection;
 import org.hamcrest.BaseMatcher;
