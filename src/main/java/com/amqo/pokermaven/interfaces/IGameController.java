@@ -5,6 +5,8 @@
  */
 package com.amqo.pokermaven.interfaces;
 
+import com.amqo.pokermaven.game.strategy.IStrategy;
+import com.amqo.pokermaven.game.GameException;
 import com.amqo.pokermaven.game.Settings;
 
 /**
@@ -17,7 +19,7 @@ public interface IGameController {
 
     public boolean addStrategy(IStrategy strategy);
 
-    public void start();
+    public void start() throws GameException;
 
     public void waitFinish();
 }

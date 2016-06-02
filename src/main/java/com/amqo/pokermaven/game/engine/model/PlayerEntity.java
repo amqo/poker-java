@@ -17,8 +17,23 @@ public class PlayerEntity extends PlayerInfo {
     private int handValue = 0;
     private BetCommand betCommand;
     private boolean showCards;
+    private int roudsSurvival;
+    private long lastRoundChips;
 
-    public PlayerEntity() {
+    public int getRoudsSurvival() {
+        return roudsSurvival;
+    }
+
+    public void setRoudsSurvival(int roudsSurvival) {
+        this.roudsSurvival = roudsSurvival;
+    }
+
+    public long getLastRoundChips() {
+        return lastRoundChips;
+    }
+
+    public void setLastRoundChips(long lastRoundChips) {
+        this.lastRoundChips = lastRoundChips;
     }
 
     public boolean showCards() {

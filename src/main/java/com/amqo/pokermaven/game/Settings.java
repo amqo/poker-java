@@ -26,6 +26,8 @@ public class Settings {
         this.maxPlayers = s.maxPlayers;
         this.time = s.time;
         this.maxErrors = s.maxErrors;
+        this.maxRounds = s.maxRounds;
+        this.rounds4IncrementBlind = s.rounds4IncrementBlind;
         this.playerChip = s.playerChip;
         this.smallBind = s.smallBind;
     }

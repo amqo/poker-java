@@ -9,21 +9,17 @@ package com.amqo.pokermaven.utils.dispatcher;
  *
  * @author alberto
  */
-public class GameEvent {
+public class GameEvent<E extends Enum> {
 
-    private String type;
+    private E type;
     private String source;
     private Object payload;
 
-    public GameEvent() {
+    public GameEvent(E type, String source) {
+        this(type, source, null);
     }
 
-    public GameEvent(String type, String source) {
-        this.source = source;
-        this.type = type;
-    }
-
-    public GameEvent(String type, String source, Object payload) {
+    public GameEvent(E type, String source, Object payload) {
         this.source = source;
         this.type = type;
         this.payload = payload;
@@ -33,23 +29,11 @@ public class GameEvent {
         return source;
     }
 
-    public void setSource(String source) {
-        this.source = source;
-    }
-
-    public String getType() {
+    public E getType() {
         return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public Object getPayload() {
         return payload;
-    }
-
-    public void setPayload(Object payload) {
-        this.payload = payload;
     }
 }

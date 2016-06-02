@@ -31,6 +31,8 @@ public class ModelContext {
     private BetCommand lastBetCommand;
     private PlayerEntity lastPlayerBet;
     private int bets = 0;
+    private HashMap<String, Double> scores;
+    private List<PlayerEntity> allPlayers = new ArrayList<>(TexasHoldEmUtil.MAX_PLAYERS);
 
     public ModelContext(Settings settings) {
         this.gameInfo.setSettings(settings);
@@ -64,11 +66,12 @@ public class ModelContext {
         player.setName(playerName);
         player.setChips(gameInfo.getSettings().getPlayerChip());
         this.playersByName.put(playerName, player);
+        this.allPlayers.add(player);
         return this.gameInfo.addPlayer(player);
     }
 
-    public boolean removePlayer(final String playerName) {
-        return gameInfo.removePlayer(playersByName.get(playerName));
+    public List<PlayerEntity> getAllPlayers() {
+        return new ArrayList<>(allPlayers);
     }
 
     public long getHighBet() {
@@ -143,9 +146,7 @@ public class ModelContext {
     public void setPlayers(List<PlayerEntity> newPlayers) {
         this.gameInfo.setPlayers(newPlayers);
         this.playersByName.clear();
-        newPlayers.stream().forEach(
-                player -> this.playersByName.put(player.getName(), player)
-        );
+        newPlayers.stream().forEach(p -> this.playersByName.put(p.getName(), p));
     }
 
     public PlayerEntity getPlayerByName(String playerName) {
@@ -203,5 +204,18 @@ public class ModelContext {
 
     public void clearCommunityCard() {
         gameInfo.clearCommunityCard();
+    }
+
+    @Override
+    public String toString() {
+        return "{class:'ModelContext', gameInfo:" + gameInfo + ", activePlayers:" + activePlayers + ", highBet:" + highBet + ", deck:" + deck + ", playersAllIn:" + playersAllIn + ", lastBetCommand:" + lastBetCommand + ", lastPlayerBet:" + lastPlayerBet + ", bets:" + bets + '}';
+    }
+
+    public void setScores(HashMap<String, Double> scores) {
+        this.scores = scores;
+    }
+
+    public HashMap<String, Double> getScores() {
+        return new HashMap<>(scores);
     }
 }

@@ -5,7 +5,6 @@
  */
 package com.amqo.pokermaven.game;
 
-import com.amqo.pokermaven.interfaces.IState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,17 +12,16 @@ import org.slf4j.LoggerFactory;
  *
  * @author alberto
  */
-public class StateMachineInstance<T> {
-    
-    private static final Logger LOGGER = LoggerFactory.getLogger(StateMachineInstance.class);
+public class StateMachineInstance<S extends Enum, T> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(StateMachineInstance.class);
     private final T context;
-    private final StateMachine<T> parent;
-    private IState<T> state;
+    private final StateMachine<S, T> parent;
+    private S state;
     private boolean finish;
     private boolean pause;
 
-    public StateMachineInstance(T context, StateMachine<T> parent, IState<T> state) {
+    public StateMachineInstance(T context, StateMachine<S, T> parent, S state) {
         this.context = context;
         this.parent = parent;
         this.state = state;
@@ -34,12 +32,15 @@ public class StateMachineInstance<T> {
         return finish;
     }
 
-    public StateMachineInstance<T> execute() {
+    public StateMachineInstance<S, T> execute() {
         this.pause = false;
         while (state != null && !pause) {
             state = executeState();
         }
         finish = state == null;
+        if (finish) {
+            LOGGER.debug("execute finish");
+        }
         return this;
     }
 
@@ -47,21 +48,20 @@ public class StateMachineInstance<T> {
         return context;
     }
 
-    private IState<T> executeState() {
-        LOGGER.info("state \"" + state.getName() + "\" executing...");
-        pause = !state.execute(context);
-        IState<T> result = state;
+    private S executeState() {
+        LOGGER.debug("state \"{}\" executing...", state);
+        pause = !parent.getTrigger(state).execute(context);
+        S result = state;
         if (!pause) {
-            LOGGER.info("state \"" + state.getName() + "\" [executed]");
-            for (Transition<T> transition : parent.getTransitionsByOrigin(state)) {
+            LOGGER.debug("state \"{}\" [executed]", state);
+            for (Transition<S, T> transition : parent.getTransitionsByOrigin(state)) {
                 if (transition.getChecker().check(context)) {
                     return transition.getTarget();
                 }
             }
             result = parent.getDefaultTransition(state);
-            LOGGER.info("execute finish");
         } else {
-            LOGGER.info("state \"" + state.getName() + "\" [paused]");
+            LOGGER.debug("state \"{}\"  [paused]", state);
         }
         return result;
     }

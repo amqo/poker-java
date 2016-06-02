@@ -10,7 +10,7 @@ package com.amqo.pokermaven.utils.dispatcher;
  * @author alberto
  */
 @FunctionalInterface
-public interface IGameEventProcessor<T> {
+public interface IGameEventProcessor<E extends Enum, T> {
 
-    public void process(T target, GameEvent event);
+    public void process(T target, GameEvent<E> event);
 }

@@ -9,9 +9,9 @@ package com.amqo.pokermaven.utils.dispatcher;
  *
  * @author alberto
  */
-public interface IGameEventDispatcher extends Runnable {
+public interface IGameEventDispatcher<E extends Enum> extends Runnable {
 
-    public void dispatch(GameEvent event);
+    public void dispatch(GameEvent<E> event);
 
     public void exit();
 }

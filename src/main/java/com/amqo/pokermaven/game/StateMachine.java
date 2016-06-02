@@ -6,7 +6,6 @@
 package com.amqo.pokermaven.game;
 
 import com.amqo.pokermaven.interfaces.IChecker;
-import com.amqo.pokermaven.interfaces.IState;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,50 +16,61 @@ import java.util.Map;
  *
  * @author alberto
  */
-public class StateMachine<T> {
+public class StateMachine<S extends Enum, T> {
 
-    private IState<T> initState = null;
-    private final Map<String, IState<T>> defaultTransition = new HashMap<>();
-    private final Map<String, List<Transition<T>>> transitions = new HashMap<>();
+    private static final IStateTrigger<?> DEFAULT_TRIGGER = (c) -> true;
+    private S initState = null;
+    private final Map<S, IStateTrigger<T>> triggersByState = new HashMap<>();
+    private final Map<S, S> defaultTransition = new HashMap<>();
+    private final Map<S, List<Transition<S, T>>> transitions = new HashMap<>();
 
-    public StateMachine() {
-    }
-
-    List<Transition<T>> getTransitionsByOrigin(IState<T> state) {
-        List<Transition<T>> result = transitions.get(state.getName());
+    List<Transition<S, T>> getTransitionsByOrigin(S state) {
+        List<Transition<S, T>> result = transitions.get(state);
         if (result == null) {
             result = Collections.emptyList();
         }
         return result;
     }
 
-    public void setInitState(IState<T> initState) {
+    public void setInitState(S initState) {
         this.initState = initState;
     }
 
-    public IState<T> getDefaultTransition(IState<T> origin) {
-        return defaultTransition.get(origin.getName());
+    public void setTrigger(S state, IStateTrigger<T> trigger) {
+        triggersByState.put(state, trigger);
     }
 
-    public void setDefaultTransition(IState<T> origin, IState<T> target) {
-        this.defaultTransition.put(origin.getName(), target);
+    public IStateTrigger<T> getTrigger(S state) {
+        IStateTrigger<T> result = triggersByState.get(state);
+        if (result == null) {
+            result = (IStateTrigger<T>) DEFAULT_TRIGGER;
+        }
+        return result;
     }
 
-    public void addTransition(Transition<T> transition) {
-        IState<T> origin = transition.getOrigin();
-        List<Transition<T>> listTransitions = transitions.get(origin.getName());
+    public S getDefaultTransition(S origin) {
+        return defaultTransition.get(origin);
+    }
+
+    public void setDefaultTransition(S origin, S target) {
+        this.defaultTransition.put(origin, target);
+    }
+
+    public void addTransition(Transition<S, T> transition) {
+        S origin = transition.getOrigin();
+        List<Transition<S, T>> listTransitions = transitions.get(origin);
         if (listTransitions == null) {
             listTransitions = new ArrayList<>();
-            transitions.put(origin.getName(), listTransitions);
+            transitions.put(origin, listTransitions);
         }
         listTransitions.add(transition);
     }
 
-    public void addTransition(IState<T> origin, IState<T> target, IChecker<T> checker) {
+    public void addTransition(S origin, S target, IChecker<T> checker) {
         addTransition(new Transition<>(origin, target, checker));
     }
 
-    public StateMachineInstance<T> startInstance(T data) {
+    public StateMachineInstance<S, T> startInstance(T data) {
         return new StateMachineInstance(data, this, initState).execute();
     }
 }

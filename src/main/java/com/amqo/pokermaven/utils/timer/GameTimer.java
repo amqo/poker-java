@@ -5,10 +5,8 @@
  */
 package com.amqo.pokermaven.utils.timer;
 
-import com.amqo.pokermaven.game.engine.model.PlayerEntity;
-import com.amqo.pokermaven.utils.dispatcher.GameEvent;
-import com.amqo.pokermaven.utils.dispatcher.IGameEventDispatcher;
 import java.util.concurrent.ExecutorService;
+import org.junit.runner.notification.RunListener.ThreadSafe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,32 +14,25 @@ import org.slf4j.LoggerFactory;
  *
  * @author alberto
  */
+@ThreadSafe
 public class GameTimer implements IGameTimer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GameTimer.class);
-    public static final String TIMEOUT_EVENT_TYPE = "timeOutCommand";
-    private final String source;
+
     private long time;
-    private IGameEventDispatcher dispatcher;
+    private TimeoutNotifier notifier;
     private boolean reset = false;
     private volatile boolean exit = false;
     private final ExecutorService executors;
     private Long timeoutId;
-    private PlayerEntity player;
 
-    public GameTimer(String source, ExecutorService executors) {
-        this.source = source;
+    public GameTimer(ExecutorService executors) {
         this.executors = executors;
     }
 
     @Override
-    public synchronized IGameEventDispatcher getDispatcher() {
-        return dispatcher;
-    }
-
-    @Override
-    public synchronized void setDispatcher(IGameEventDispatcher dispatcher) {
-        this.dispatcher = dispatcher;
+    public void setNotifier(TimeoutNotifier notifier) {
+        this.notifier = notifier;
     }
 
     @Override
@@ -55,7 +46,7 @@ public class GameTimer implements IGameTimer {
     }
 
     @Override
-    public synchronized void resetTimer(Long timeoutId) {
+    public synchronized void changeTimeoutId(Long timeoutId) {
         this.timeoutId = timeoutId;
         this.reset = true;
         notify();
@@ -65,7 +56,7 @@ public class GameTimer implements IGameTimer {
     public synchronized void exit() {
         this.exit = true;
         this.reset = false;
-        this.player = null;
+        this.timeoutId = null;
         notify();
     }
 
@@ -75,7 +66,7 @@ public class GameTimer implements IGameTimer {
         while (!exit) {
             try {
                 doTask();
-            } catch (InterruptedException ex) {
+            } catch (Exception ex) {
                 LOGGER.error("Timer interrupted", ex);
             }
         }
@@ -90,9 +81,9 @@ public class GameTimer implements IGameTimer {
             reset = false;
             wait(time);
             if (!reset && timeoutId != null) {
-                GameEvent event = new GameEvent(TIMEOUT_EVENT_TYPE, source, timeoutId);
-                executors.execute(() -> dispatcher.dispatch(event));
-                //player = null;
+                final Long timeoutToNotify = timeoutId;
+                executors.execute(() -> notifier.notify(timeoutToNotify));
+                timeoutId = null;
             }
         }
     }

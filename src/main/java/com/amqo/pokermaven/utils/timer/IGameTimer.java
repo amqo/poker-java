@@ -5,8 +5,6 @@
  */
 package com.amqo.pokermaven.utils.timer;
 
-import com.amqo.pokermaven.utils.dispatcher.IGameEventDispatcher;
-
 /**
  *
  * @author alberto
@@ -17,11 +15,9 @@ public interface IGameTimer extends Runnable {
 
     public long getTime();
 
-    public void resetTimer(Long timeroutId);
+    public void changeTimeoutId(Long timeoutId);
 
     public void setTime(long time);
 
-    public IGameEventDispatcher getDispatcher();
-
-    public void setDispatcher(IGameEventDispatcher dispatcher);
+    public void setNotifier(TimeoutNotifier notifier);
 }
